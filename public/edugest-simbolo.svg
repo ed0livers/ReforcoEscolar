@@ -1,0 +1,13 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="symGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#6366F1" />
+          <stop offset="100%" stopColor="#A78BFA" />
+        </linearGradient>
+      </defs>
+      <circle cx="200" cy="200" r="190" fill="url(#symGrad)" opacity="0.15"/>
+      <circle cx="200" cy="200" r="175" stroke="url(#symGrad)" strokeWidth="10" fill="none" opacity="0.4"/>
+      <path d="M 100 90 L 275 90 L 275 120 L 140 120 L 140 180 L 250 180 L 250 210 L 140 210 L 140 290 L 285 290 L 285 320 L 100 320 Z" fill="url(#symGrad)"/>
+      <circle cx="250" cy="125" r="55" fill="#F97316"/>
+      <path d="M 250 90 L 250 160 M 215 125 L 285 125" stroke="white" strokeWidth="15" strokeLinecap="round"/>
+    </svg>

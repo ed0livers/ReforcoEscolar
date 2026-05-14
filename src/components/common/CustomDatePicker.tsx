@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { CalendarDays, X, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-
+import { CalendarDays, X, Plus } from 'lucide-react';
 interface CustomDatePickerProps {
   value: string;
   onChange: (val: string) => void;
@@ -67,19 +66,19 @@ export const CustomDatePicker = ({ value, onChange, label, name, id }: CustomDat
 
   return (
     <div className="relative w-full group">
-      <label className="block text-[10px] font-black uppercase text-purple-400 mb-1.5 ml-1 tracking-widest">{label}</label>
-      <div className="flex items-center bg-purple-50/50 border border-purple-100 rounded-xl hover:border-purple-300 transition-all px-2.5 group-hover:shadow-sm">
+      <label className="block text-[10px] font-black uppercase text-indigo-400 mb-1.5 ml-1 tracking-widest">{label}</label>
+      <div className="flex items-center bg-indigo-50/50 border border-indigo-100 rounded-xl hover:border-indigo-300 transition-all px-2.5 group-hover:shadow-sm">
         <input 
           type="text"
           placeholder="DD/MM/AAAA"
           value={inputValue}
           onChange={handleInputChange}
           onClick={() => setIsOpen(true)}
-          className="flex-1 bg-transparent py-3 text-[13px] font-bold text-purple-900 outline-none placeholder:text-purple-200"
+          className="flex-1 bg-transparent py-3 text-[13px] font-bold text-indigo-900 outline-none placeholder:text-indigo-200"
         />
         <input type="hidden" name={name} id={id} value={value} />
         <button type="button" onClick={() => setIsOpen(!isOpen)} className="p-1">
-          <CalendarDays className="w-4 h-4 text-purple-400 hover:text-purple-600 transition-colors" />
+          <CalendarDays className="w-4 h-4 text-indigo-400 hover:text-indigo-600 transition-colors" />
         </button>
       </div>
 
@@ -91,17 +90,17 @@ export const CustomDatePicker = ({ value, onChange, label, name, id }: CustomDat
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="absolute right-0 top-full mt-2 w-72 bg-white border border-purple-50 rounded-[2.5rem] shadow-2xl z-[70] p-6"
+              className="absolute right-0 top-full mt-2 w-72 bg-white border border-indigo-50 rounded-[2.5rem] shadow-2xl z-[70] p-6"
             >
               <div className="flex justify-between items-center mb-6">
-                <button type="button" onClick={() => changeMonth(-1)} className="p-2 hover:bg-purple-50 rounded-full text-purple-300 transition-colors">
+                <button type="button" onClick={() => changeMonth(-1)} className="p-2 hover:bg-indigo-50 rounded-full text-indigo-300 transition-colors">
                   <X className="w-4 h-4 rotate-45" />
                 </button>
                 <div className="text-center cursor-pointer hover:scale-105 transition-transform" onClick={() => setView(view === 'years' ? 'calendar' : 'years')}>
-                  <p className="text-[10px] uppercase font-black text-purple-300 leading-none">{view === 'calendar' ? 'Mudar Ano' : 'Voltar'}</p>
-                  <p className="text-base font-black text-purple-900">{view === 'calendar' ? `${months[viewDate.getMonth()]} ${viewDate.getFullYear()}` : 'Selecionar Ano'}</p>
+                  <p className="text-[10px] uppercase font-black text-indigo-300 leading-none">{view === 'calendar' ? 'Mudar Ano' : 'Voltar'}</p>
+                  <p className="text-base font-black text-indigo-900">{view === 'calendar' ? `${months[viewDate.getMonth()]} ${viewDate.getFullYear()}` : 'Selecionar Ano'}</p>
                 </div>
-                <button type="button" onClick={() => changeMonth(1)} className="p-2 hover:bg-purple-50 rounded-full text-purple-300 transition-colors">
+                <button type="button" onClick={() => changeMonth(1)} className="p-2 hover:bg-indigo-50 rounded-full text-indigo-300 transition-colors">
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
@@ -110,7 +109,7 @@ export const CustomDatePicker = ({ value, onChange, label, name, id }: CustomDat
                 <>
                   <div className="grid grid-cols-7 gap-1 text-center mb-2">
                     {['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(d => (
-                      <span key={d} className="text-[10px] font-black text-purple-100">{d}</span>
+                      <span key={d} className="text-[10px] font-black text-indigo-100">{d}</span>
                     ))}
                   </div>
                   <div className="grid grid-cols-7 gap-1">
@@ -125,7 +124,7 @@ export const CustomDatePicker = ({ value, onChange, label, name, id }: CustomDat
                           key={day} 
                           type="button"
                           onClick={() => handleSelect(day)}
-                          className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${isSelected ? 'bg-purple-600 text-white shadow-lg' : 'hover:bg-purple-50 text-purple-900'}`}
+                          className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${isSelected ? 'bg-indigo-600 text-white shadow-lg' : 'hover:bg-indigo-50 text-indigo-900'}`}
                         >
                           {day}
                         </button>
@@ -140,7 +139,7 @@ export const CustomDatePicker = ({ value, onChange, label, name, id }: CustomDat
                       key={y} 
                       type="button"
                       onClick={() => { setViewDate(new Date(y, viewDate.getMonth(), 1)); setView('calendar'); }}
-                      className={`py-2 text-xs font-bold rounded-xl transition-all ${viewDate.getFullYear() === y ? 'bg-purple-600 text-white shadow-md' : 'hover:bg-purple-50 text-purple-800'}`}
+                      className={`py-2 text-xs font-bold rounded-xl transition-all ${viewDate.getFullYear() === y ? 'bg-indigo-600 text-white shadow-md' : 'hover:bg-indigo-50 text-indigo-800'}`}
                     >
                       {y}
                     </button>
@@ -157,7 +156,7 @@ export const CustomDatePicker = ({ value, onChange, label, name, id }: CustomDat
                   setViewDate(today);
                   setIsOpen(false);
                 }}
-                className="w-full mt-6 py-2 text-[10px] font-black uppercase text-purple-400 hover:text-purple-600 border-t border-purple-50 pt-4"
+                className="w-full mt-6 py-2 text-[10px] font-black uppercase text-indigo-400 hover:text-indigo-600 border-t border-indigo-50 pt-4"
               >
                 Hoje
               </button>

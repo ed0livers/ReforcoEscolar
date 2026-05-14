@@ -1,0 +1,20 @@
+<svg width="800" height="200" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#1e40af" />
+          <stop offset="100%" stopColor="#3b82f6" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(20, 40)">
+        <circle cx="60" cy="60" r="55" fill="url(#hGrad)" opacity="0.15"/>
+        <circle cx="60" cy="60" r="50" stroke="url(#hGrad)" strokeWidth="3" opacity="0.3"/>
+        <path d="M 30 30 L 80 30 L 80 40 L 42 40 L 42 56 L 74 56 L 74 66 L 42 66 L 42 90 L 84 90 L 84 100 L 30 100 Z" fill="url(#hGrad)"/>
+        <circle cx="72" cy="42" r="18" fill="#60a5fa"/>
+        <path d="M 72 30 L 72 54 M 60 42 L 84 42" stroke="white" strokeWidth="5" strokeLinecap="round"/>
+      </g>
+      <text x="160" y="105" fontFamily="system-ui" fontSize="90" fontWeight="900" letterSpacing="-4">
+        <tspan fill="#1e3a8a">Edu</tspan>
+        <tspan fill="url(#hGrad)">Gest</tspan>
+        <tspan fill="#60a5fa" fontSize="75">+</tspan>
+      </text>
+    </svg>

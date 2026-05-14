@@ -24,30 +24,30 @@ export const Materiais = ({ materiais, activeModal, setActiveModal, addMaterial,
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-bold">Materiais de Apoio</h2>
-          <p className="text-purple-400 mt-2">Biblioteca central de conteúdos pedagógicos.</p>
+          <p className="text-indigo-400 mt-2">Biblioteca central de conteúdos pedagógicos.</p>
         </div>
-        <button onClick={() => setActiveModal('material')} className="bg-[#8126cf] text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#6b1ead] transition-all">
+        <button onClick={() => setActiveModal('material')} className="bg-[#4f46e5] text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-[#4338ca] transition-all">
           <Plus className="w-5 h-5" /> Novo Material
         </button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {materiais.map((mat: any, i: number) => (
-          <div key={i} className="bg-white rounded-2xl border border-purple-50 overflow-hidden group hover:shadow-xl transition-all cursor-pointer">
-            <div className="h-40 bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-              <FileText className="w-12 h-12 text-purple-300" />
+          <div key={i} className="bg-white rounded-2xl border border-indigo-50 overflow-hidden group hover:shadow-xl transition-all cursor-pointer">
+            <div className="h-40 bg-indigo-100 flex items-center justify-center group-hover:bg-indigo-200 transition-colors">
+              <FileText className="w-12 h-12 text-indigo-300" />
             </div>
             <div className="p-5">
-              <span className="text-[10px] font-bold uppercase text-purple-500 bg-purple-50 px-2 py-1 rounded">{mat.type || 'Documento'}</span>
-              <h4 className="font-bold mt-3 leading-tight group-hover:text-[#8126cf] transition-colors line-clamp-1">{mat.titulo || mat.nome}</h4>
+              <span className="text-[10px] font-bold uppercase text-indigo-500 bg-indigo-50 px-2 py-1 rounded">{mat.type || 'Documento'}</span>
+              <h4 className="font-bold mt-3 leading-tight group-hover:text-[#4f46e5] transition-colors line-clamp-1">{mat.titulo || mat.nome}</h4>
               <div className="mt-6 flex items-center justify-between">
-                <span className="text-xs text-purple-400">{mat.autor || 'Admin'}</span>
+                <span className="text-xs text-indigo-400">{mat.autor || 'Admin'}</span>
                 {mat.file_url && (
                   <a 
                     href={mat.file_url} 
                     target="_blank" 
                     rel="noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="p-1.5 bg-[#8126cf] text-white rounded-lg hover:scale-110 transition-transform"
+                    className="p-1.5 bg-[#4f46e5] text-white rounded-lg hover:scale-110 transition-transform"
                     title="Abrir Documento"
                   >
                     <Download className="w-3.5 h-3.5" />
@@ -57,7 +57,7 @@ export const Materiais = ({ materiais, activeModal, setActiveModal, addMaterial,
             </div>
           </div>
         ))}
-        {materiais.length === 0 && <p className="col-span-4 text-center text-purple-400 py-10 font-bold">Nenhum material publicado ainda.</p>}
+        {materiais.length === 0 && <p className="col-span-4 text-center text-indigo-400 py-10 font-bold">Nenhum material publicado ainda.</p>}
       </div>
 
       <Modal 
@@ -81,12 +81,12 @@ export const Materiais = ({ materiais, activeModal, setActiveModal, addMaterial,
           className="p-8 space-y-6"
         >
           <div>
-            <label className="block text-xs font-bold uppercase text-purple-400 mb-2">Título do Material</label>
-            <input name="titulo" type="text" placeholder="Ex: Apostila de Matemática" className="w-full p-3 bg-purple-50/30 border border-purple-100 rounded-xl outline-none focus:ring-2 focus:ring-purple-200 transition-all font-bold" required />
+            <label className="block text-xs font-bold uppercase text-indigo-400 mb-2">Título do Material</label>
+            <input name="titulo" type="text" placeholder="Ex: Apostila de Matemática" className="w-full p-3 bg-indigo-50/30 border border-indigo-100 rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 transition-all font-bold" required />
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase text-purple-400 mb-2">Categoria</label>
-            <select name="type" className="w-full p-3 bg-purple-50/30 border border-purple-100 rounded-xl outline-none focus:ring-2 focus:ring-purple-200 transition-all font-bold">
+            <label className="block text-xs font-bold uppercase text-indigo-400 mb-2">Categoria</label>
+            <select name="type" className="w-full p-3 bg-indigo-50/30 border border-indigo-100 rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 transition-all font-bold">
               <option value="Geral">Geral</option>
               <option value="Português">Português</option>
               <option value="Matemática">Matemática</option>
@@ -96,19 +96,19 @@ export const Materiais = ({ materiais, activeModal, setActiveModal, addMaterial,
             </select>
           </div>
           <div className="space-y-2">
-            <label className="block text-xs font-bold uppercase text-purple-400">Anexo do Material (Link ou Arquivo)</label>
+            <label className="block text-xs font-bold uppercase text-indigo-400">Anexo do Material (Link ou Arquivo)</label>
             <input 
               name="file_url" 
               type="text" 
               placeholder="Cole o link do PDF ou Nuvem aqui" 
-              className="w-full p-3 bg-purple-50/30 border border-purple-100 rounded-xl outline-none focus:ring-2 focus:ring-purple-200 transition-all text-xs" 
+              className="w-full p-3 bg-indigo-50/30 border border-indigo-100 rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 transition-all text-xs" 
             />
           </div>
-          <div className="border-2 border-dashed border-purple-100 rounded-2xl p-6 flex flex-col items-center justify-center bg-purple-50/30 text-purple-400 hover:bg-purple-50 transition-colors">
+          <div className="border-2 border-dashed border-indigo-100 rounded-2xl p-6 flex flex-col items-center justify-center bg-indigo-50/30 text-indigo-400 hover:bg-indigo-50 transition-colors">
             <Upload className="w-8 h-8 mb-2" />
             <p className="text-[10px] text-center font-bold">Você também pode colar o link do documento acima <br/> para acesso imediato da equipe.</p>
           </div>
-          <button type="submit" className="w-full bg-purple-600 text-white py-4 rounded-xl font-bold hover:bg-purple-700 transition-all">Registrar Material</button>
+          <button type="submit" className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all">Registrar Material</button>
         </form>
       </Modal>
     </motion.section>

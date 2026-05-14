@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ConectorSupabase } from '../supabase/ConectorSupabase';
+import { ConectorAPI, getToken, getStoredUser, removeToken } from '../api/ConectorAPI';
 
 export function useAuth() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -9,38 +9,24 @@ export function useAuth() {
   const [showConfirmationScreen, setShowConfirmationScreen] = useState(false);
 
   useEffect(() => {
-    // Sincroniza a sessão do Supabase com o estado local
-    ConectorSupabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setIsLoggedIn(true);
-        setUserEmail(session.user.email || 'Admin');
-      }
-    });
+    // Verificar se há sessão salva no localStorage
+    const token = getToken();
+    const user  = getStoredUser();
 
-    // Detectar fluxo de recuperação pela URL antes do evento disparar
-    if (window.location.hash.includes('type=recovery')) {
-      setIsRecoveringSession(true);
+    if (token && user) {
+      setIsLoggedIn(true);
+      setUserEmail(user.email || 'Admin');
+    } else {
+      setIsLoggedIn(false);
+      setUserEmail('');
     }
-
-    const { data: { subscription } } = ConectorSupabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setIsRecoveringSession(true);
-      }
-      
-      if (session) {
-        setIsLoggedIn(true);
-        setUserEmail(session.user.email || 'Admin');
-      } else {
-        setIsLoggedIn(false);
-      }
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const handleLogout = async () => {
-    await ConectorSupabase.auth.signOut();
+    await ConectorAPI.auth.signOut();
+    removeToken();
     setIsLoggedIn(false);
+    setUserEmail('');
   };
 
   return {
@@ -48,6 +34,7 @@ export function useAuth() {
     setIsLoggedIn,
     isRecoveringSession,
     userEmail,
+    setUserEmail,
     authError,
     setAuthError,
     showConfirmationScreen,

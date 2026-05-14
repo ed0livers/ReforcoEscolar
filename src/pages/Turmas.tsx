@@ -23,16 +23,38 @@ interface TurmasProps {
   alertData: {title: string, message: string} | null;
   setAlertData: (data: {title: string, message: string} | null) => void;
   setViewingAluno: (aluno: any) => void;
+  frequencias: any[];
 }
 
 export const Turmas = ({ 
   turmas, alunos, activeModal, setActiveModal, editingTurma, setEditingTurma, 
   viewingTurma, setViewingTurma, activeAttendanceTurma, setActiveAttendanceTurma, 
   deleteTurma, addTurma, updateTurma, registrarFrequencia, addToast, 
-  alertData, setAlertData, setViewingAluno
+  alertData, setAlertData, setViewingAluno, frequencias
 }: TurmasProps) => {
   const [attendanceDate, setAttendanceDate] = useState(new Date().toISOString().split('T')[0]);
   const [chamadaData, setChamadaData] = useState<Record<string, 'presente' | 'falta'>>({});
+
+  // Pré-carregar dados da chamada se já existirem para a data selecionada
+  React.useEffect(() => {
+    if (activeAttendanceTurma) {
+      const dataFormatada = attendanceDate; // Já está em YYYY-MM-DD
+      const freqDoDia = frequencias.filter(f => 
+        f.turma_id === activeAttendanceTurma.id && 
+        f.data.split('T')[0] === dataFormatada
+      );
+
+      if (freqDoDia.length > 0) {
+        const novoEstado: Record<string, 'presente' | 'falta'> = {};
+        freqDoDia.forEach(f => {
+          novoEstado[f.aluno_id] = f.presente ? 'presente' : 'falta';
+        });
+        setChamadaData(novoEstado);
+      } else {
+        setChamadaData({});
+      }
+    }
+  }, [attendanceDate, activeAttendanceTurma, frequencias]);
 
   return (
     <motion.section 
@@ -52,9 +74,9 @@ export const Turmas = ({
         </button>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-purple-50 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
         <table className="w-full text-left">
-          <thead className="bg-purple-50/50 text-[10px] font-bold uppercase tracking-widest text-purple-400">
+          <thead className="bg-indigo-50/50 text-[10px] font-bold uppercase tracking-widest text-indigo-400">
             <tr>
               <th className="px-6 py-4">Nome da Turma</th>
               <th className="px-6 py-4">Alunos Matriculados</th>
@@ -62,11 +84,11 @@ export const Turmas = ({
               <th className="px-6 py-4 text-right">Ações</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-purple-50">
+          <tbody className="divide-y divide-indigo-50">
             {turmas.map((turma: any, i: number) => {
               const alunosInscritos = alunos.filter(a => a.turma === turma.nome && a.status === 'ATIVO');
               return (
-                <tr key={i} className="hover:bg-purple-50/20 transition-colors">
+                <tr key={i} className="hover:bg-indigo-50/20 transition-colors">
                   <td className="px-6 py-4 flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold shrink-0">
                       <Layers className="w-5 h-5" />
@@ -84,7 +106,7 @@ export const Turmas = ({
                           {alunosInscritos.length} Alunos (Exibir)
                         </button>
                       ) : (
-                        <span className="text-[10px] font-semibold text-purple-300 italic">Turma vazia</span>
+                        <span className="text-[10px] font-semibold text-indigo-300 italic">Turma vazia</span>
                       )}
                     </div>
                   </td>
@@ -134,7 +156,7 @@ export const Turmas = ({
             })}
             {turmas.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-6 py-8 text-center text-purple-400 text-sm">
+                <td colSpan={4} className="px-6 py-8 text-center text-indigo-400 text-sm">
                   Nenhuma turma registrada.
                 </td>
               </tr>
@@ -171,20 +193,20 @@ export const Turmas = ({
           className="p-8 space-y-6"
         >
           <div>
-            <label className="block text-xs font-bold uppercase text-purple-400 mb-2">Nome da Turma / Horário</label>
-            <input defaultValue={editingTurma?.nome || ''} name="nome" type="text" placeholder="Ex: Manhã - 08:00 - 10:00" className="w-full p-3 bg-purple-50/30 border border-purple-100 rounded-xl outline-none focus:ring-2 focus:ring-purple-200 transition-all" required />
+            <label className="block text-xs font-bold uppercase text-indigo-400 mb-2">Nome da Turma / Horário</label>
+            <input defaultValue={editingTurma?.nome || ''} name="nome" type="text" placeholder="Ex: Manhã - 08:00 - 10:00" className="w-full p-3 bg-indigo-50/30 border border-indigo-100 rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 transition-all" required />
           </div>
           {editingTurma && (
             <div>
-              <label className="block text-xs font-bold uppercase text-purple-400 mb-2">Status</label>
-              <select defaultValue={editingTurma?.status || 'ATIVO'} name="status" className="w-full p-3 bg-purple-50/30 border border-purple-100 rounded-xl outline-none focus:ring-2 focus:ring-purple-200 transition-all">
+              <label className="block text-xs font-bold uppercase text-indigo-400 mb-2">Status</label>
+              <select defaultValue={editingTurma?.status || 'ATIVO'} name="status" className="w-full p-3 bg-indigo-50/30 border border-indigo-100 rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 transition-all">
                 <option value="ATIVO">Ativo</option>
                 <option value="INATIVO">Inativo</option>
               </select>
             </div>
           )}
           <div className="flex gap-4 justify-end pt-4">
-            <button type="button" onClick={() => { setActiveModal(null); setEditingTurma(null); }} className="px-6 py-3 font-bold text-purple-400 hover:text-purple-600 transition-colors">Cancelar</button>
+            <button type="button" onClick={() => { setActiveModal(null); setEditingTurma(null); }} className="px-6 py-3 font-bold text-indigo-400 hover:text-indigo-600 transition-colors">Cancelar</button>
             <button type="submit" className="bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-indigo-100 hover:bg-indigo-700 transition-all">Salvar Turma</button>
           </div>
         </form>
@@ -200,14 +222,14 @@ export const Turmas = ({
           <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
             {alunos.filter(a => a.turma === viewingTurma?.nome).length > 0 ? (
               alunos.filter(a => a.turma === viewingTurma?.nome).map((aluno: any, i: number) => (
-                <div key={i} className="flex items-center justify-between p-4 rounded-xl border border-purple-50 bg-purple-50/20">
+                <div key={i} className="flex items-center justify-between p-4 rounded-xl border border-indigo-50 bg-indigo-50/20">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">
+                    <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">
                       {aluno.nome?.[0]?.toUpperCase()}
                     </div>
                     <div>
                       <p className="text-sm font-bold text-gray-800">{aluno.nome}</p>
-                      <p className="text-[10px] text-purple-400 font-semibold uppercase">{aluno.status}</p>
+                      <p className="text-[10px] text-indigo-400 font-semibold uppercase">{aluno.status}</p>
                     </div>
                   </div>
                   <button 
@@ -215,7 +237,7 @@ export const Turmas = ({
                       setViewingAluno(aluno);
                       setActiveModal('view_aluno');
                     }}
-                    className="text-[10px] font-bold text-purple-600 bg-white px-3 py-1.5 rounded-lg border border-purple-100 hover:shadow-sm transition-all"
+                    className="text-[10px] font-bold text-indigo-600 bg-white px-3 py-1.5 rounded-lg border border-indigo-100 hover:shadow-sm transition-all"
                   >
                     Ver Ficha
                   </button>
@@ -223,12 +245,12 @@ export const Turmas = ({
               ))
             ) : (
               <div className="text-center py-8">
-                <p className="text-purple-300 italic">Nenhum aluno matriculado nesta turma.</p>
+                <p className="text-indigo-300 italic">Nenhum aluno matriculado nesta turma.</p>
               </div>
             )}
           </div>
-          <div className="flex justify-end pt-4 border-t border-purple-50">
-            <button onClick={() => { setActiveModal(null); setViewingTurma(null); }} className="px-6 py-3 font-bold text-purple-600 bg-purple-100 hover:bg-purple-200 rounded-xl transition-colors">Fechar</button>
+          <div className="flex justify-end pt-4 border-t border-indigo-50">
+            <button onClick={() => { setActiveModal(null); setViewingTurma(null); }} className="px-6 py-3 font-bold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 rounded-xl transition-colors">Fechar</button>
           </div>
         </div>
       </Modal>
@@ -240,7 +262,7 @@ export const Turmas = ({
         title={`Chamada: ${activeAttendanceTurma?.nome}`}
       >
          <div className="p-8 space-y-8">
-            <div className="bg-white p-6 rounded-[2.5rem] border border-purple-100 shadow-sm">
+            <div className="bg-white p-6 rounded-[2.5rem] border border-indigo-100 shadow-sm">
                <CustomDatePicker 
                   label="Dia da Aula"
                   value={attendanceDate}
@@ -251,7 +273,7 @@ export const Turmas = ({
                {alunos.filter(a => a.turma === activeAttendanceTurma?.nome).map((aluno, i) => {
                  const status = chamadaData[aluno.id] || 'presente';
                  return (
-                  <div key={i} className="flex justify-between items-center p-5 bg-white border border-purple-50 rounded-2xl shadow-sm hover:shadow-md transition-all">
+                  <div key={i} className="flex justify-between items-center p-5 bg-white border border-indigo-50 rounded-2xl shadow-sm hover:shadow-md transition-all">
                      <p className="font-black text-sm">{aluno.nome}</p>
                      <div className="flex gap-2">
                         <button 
@@ -275,9 +297,11 @@ export const Turmas = ({
                 const alunosTurma = alunos.filter(a => a.turma === activeAttendanceTurma?.nome);
                 const listaChamada = alunosTurma.map(aluno => ({
                   aluno_id: aluno.id,
+                  aluno_nome: aluno.nome,
                   turma_id: activeAttendanceTurma.id,
+                  turma_nome: activeAttendanceTurma.nome,
                   data: attendanceDate,
-                  status: chamadaData[aluno.id] || 'presente'
+                  presente: (chamadaData[aluno.id] || 'presente') === 'presente'
                 }));
 
                 await registrarFrequencia(listaChamada);
@@ -285,7 +309,7 @@ export const Turmas = ({
                 setActiveAttendanceTurma(null);
                 setChamadaData({});
               }} 
-              className="w-full py-5 bg-purple-600 text-white rounded-3xl font-black shadow-xl hover:bg-purple-700 transition-all"
+              className="w-full py-5 bg-indigo-600 text-white rounded-3xl font-black shadow-xl hover:bg-indigo-700 transition-all"
             >
               Finalizar Chamada
             </button>

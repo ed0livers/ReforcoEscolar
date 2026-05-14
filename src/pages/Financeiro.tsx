@@ -26,7 +26,7 @@ export const Financeiro = ({
     >
       <div>
         <h2 className="text-3xl font-bold mb-2">Gestão Financeira</h2>
-        <p className="text-purple-400 text-sm">Controle de entradas e mensalidades em aberto</p>
+        <p className="text-indigo-400 text-sm">Controle de entradas e mensalidades em aberto</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -45,9 +45,9 @@ export const Financeiro = ({
           <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
           <h3 className="font-bold text-gray-700">Mensalidades Pendentes</h3>
         </div>
-        <div className="bg-white rounded-2xl shadow-sm border border-purple-50 overflow-hidden">
+        <div className="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden">
           <table className="w-full text-left">
-            <thead className="bg-purple-50/50 text-[10px] font-bold uppercase tracking-widest text-purple-400">
+            <thead className="bg-indigo-50/50 text-[10px] font-bold uppercase tracking-widest text-indigo-400">
               <tr>
                 <th className="px-6 py-4">Aluno / Turma</th>
                 <th className="px-6 py-4">Valor</th>
@@ -55,16 +55,16 @@ export const Financeiro = ({
                 <th className="px-6 py-4 text-right">Ação</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-purple-50">
+            <tbody className="divide-y divide-indigo-50">
               {mensalidades.filter(m => m.status === 'PENDENTE').length > 0 ? (
                 mensalidades.filter(m => m.status === 'PENDENTE').map((pag: any, i: number) => (
-                <tr key={i} className="hover:bg-purple-50/20 transition-colors">
+                <tr key={i} className="hover:bg-indigo-50/20 transition-colors">
                   <td className="px-6 py-4">
                     <p className="text-sm font-bold">{pag.nome}</p>
-                    <p className="text-xs text-purple-400">{pag.curso}</p>
+                    <p className="text-xs text-indigo-400">{pag.curso}</p>
                   </td>
                   <td className="px-6 py-4 font-bold text-red-600">{pag.valor}</td>
-                  <td className="px-6 py-4 text-sm text-purple-400 font-medium">{pag.data}</td>
+                  <td className="px-6 py-4 text-sm text-indigo-400 font-medium">{pag.data}</td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center gap-2 justify-end">
                       <button 
@@ -102,19 +102,19 @@ export const Financeiro = ({
                   </td>
                 </tr>
               ))) : (
-                <tr><td colSpan={4} className="px-6 py-12 text-center text-purple-300 italic text-sm">Tudo em dia! Nenhuma mensalidade pendente.</td></tr>
+                <tr><td colSpan={4} className="px-6 py-12 text-center text-indigo-300 italic text-sm">Tudo em dia! Nenhuma mensalidade pendente.</td></tr>
               )}
             </tbody>
           </table>
         </div>
       </div>
 
-      <div className="space-y-4 pt-4 border-t border-purple-50">
+      <div className="space-y-4 pt-4 border-t border-indigo-50">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-green-500"></div>
           <h3 className="font-bold text-gray-700">Pagamentos Recebidos</h3>
         </div>
-        <div className="bg-white rounded-2xl shadow-sm border border-purple-50 overflow-hidden opacity-90 transition-opacity">
+        <div className="bg-white rounded-2xl shadow-sm border border-indigo-50 overflow-hidden opacity-90 transition-opacity">
           <table className="w-full text-left">
             <thead className="bg-zinc-50 text-[10px] font-bold uppercase tracking-widest text-zinc-400">
               <tr>
@@ -124,7 +124,7 @@ export const Financeiro = ({
                 <th className="px-6 py-4 text-right">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-purple-50">
+            <tbody className="divide-y divide-indigo-50">
               {mensalidades.filter(m => m.status === 'PAGO').length > 0 ? (
                 mensalidades.filter(m => m.status === 'PAGO').map((pag: any, i: number) => (
                 <tr key={i} className="hover:bg-green-50/10 transition-colors">

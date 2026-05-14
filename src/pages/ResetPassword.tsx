@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Lock, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { ConectorSupabase } from '../supabase/ConectorSupabase';
+import { Lock, AlertCircle, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ConectorAPI } from '../api/ConectorAPI';
 
 export const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -11,6 +11,8 @@ export const ResetPassword = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,29 +29,38 @@ export const ResetPassword = () => {
     }
 
     setLoading(true);
+    if (!token) {
+      setError('Token de recuperação ausente. Por favor, solicite um novo link.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const { error } = await ConectorSupabase.auth.updateUser({ password });
-      if (error) throw error;
+      const { error } = await ConectorAPI.auth.resetPassword({ 
+        token, 
+        newPassword: password 
+      });
+      if (error) throw new Error(error.message);
 
       setSuccess(true);
       setTimeout(() => navigate('/login'), 3000);
     } catch (err: any) {
-      setError(err.message || 'Erro ao redefinir senha.');
+      setError(err.message || 'Erro ao redefinir senha. O link pode ter expirado.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-[100] bg-gradient-to-br from-[#feebff] to-[#fff3fd] flex items-center justify-center p-6 font-sans">
+    <div className="fixed inset-0 z-[100] bg-gradient-to-br from-[#eef2ff] to-[#f5f7ff] flex items-center justify-center p-6 font-sans">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-[450px] bg-white rounded-[2rem] p-10 shadow-2xl"
       >
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mb-4">
-            <Lock className="w-8 h-8 text-[#8126cf]" />
+          <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-4">
+            <Lock className="w-8 h-8 text-[#4f46e5]" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900">Nova Senha</h2>
           <p className="text-gray-500 text-sm mt-2">Escolha uma senha forte para proteger sua conta.</p>
@@ -87,7 +98,7 @@ export const ResetPassword = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••" 
-                    className="w-full p-3.5 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-purple-200 transition-all font-bold" 
+                    className="w-full p-3.5 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 transition-all font-bold" 
                     required 
                   />
                 </div>
@@ -101,7 +112,7 @@ export const ResetPassword = () => {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••" 
-                    className="w-full p-3.5 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-purple-200 transition-all font-bold" 
+                    className="w-full p-3.5 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 transition-all font-bold" 
                     required 
                   />
                 </div>
@@ -111,7 +122,7 @@ export const ResetPassword = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full bg-[#8126cf] text-white py-4 rounded-xl font-bold shadow-lg hover:bg-[#6b1ead] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full bg-[#4f46e5] text-white py-4 rounded-xl font-bold shadow-lg hover:bg-[#4338ca] transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {loading ? 'Processando...' : 'Redefinir Senha'}
             </button>

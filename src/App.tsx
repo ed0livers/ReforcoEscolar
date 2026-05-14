@@ -16,10 +16,10 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 
-// Supabase & Hooks
-import { useSincronizador, SyncStatusUI } from './supabase/SincronizadorDeDados';
-import { ConectorSupabase } from './supabase/ConectorSupabase';
+// API & Hooks
+import { useSincronizador, SyncStatusUI } from './api/SincronizadorDeDados';
 import { useAuth } from './hooks/useAuth';
+import { ConectorAPI, getStoredUser } from './api/ConectorAPI';
 
 // Components
 import { Sidebar } from './components/layout/Sidebar';
@@ -48,7 +48,7 @@ export default function App() {
   const auth = useAuth();
   const { 
     isSyncing, connectionError, sincronizar, 
-    alunos, professores, materiais, mensalidades, turmas, configs,
+    alunos, professores, materiais, mensalidades, turmas, frequencias, configs,
     addAluno, updateAluno, deleteAluno, addProfessor, updateProfessor, deleteProfessor, 
     addMaterial, updateMensalidadeStatus, addTurma, updateTurma, deleteTurma, 
     registrarFrequencia, salvarConfigs
@@ -112,7 +112,13 @@ export default function App() {
         setAuthError={auth.setAuthError}
         showConfirmationScreen={auth.showConfirmationScreen}
         setShowConfirmationScreen={auth.setShowConfirmationScreen}
-        setIsLoggedIn={() => {}} 
+        setIsLoggedIn={(val) => {
+          auth.setIsLoggedIn(val);
+          if (val) {
+            const user = getStoredUser();
+            auth.setUserEmail(user?.email || '');
+          }
+        }}
         addToast={addToast}
       />
     );
@@ -191,6 +197,7 @@ export default function App() {
                   addTurma={addTurma}
                   updateTurma={updateTurma}
                   registrarFrequencia={registrarFrequencia}
+                  frequencias={frequencias}
                   addToast={addToast}
                   alertData={alertData}
                   setAlertData={setAlertData}
@@ -244,8 +251,9 @@ export default function App() {
           onSubmit={async (e) => {
             e.preventDefault();
             const form = e.target as any;
+            const currentPassword = form.currentPassword.value;
             const newPassword = form.newPassword.value;
-            const { error } = await ConectorSupabase.auth.updateUser({ password: newPassword });
+            const { error } = await ConectorAPI.auth.updatePassword({ currentPassword, newPassword });
             if (error) {
               addToast(`Erro ao redefinir: ${error.message}`);
             } else {
@@ -255,16 +263,20 @@ export default function App() {
           }} 
           className="p-8 space-y-6"
         >
-          <div className="bg-purple-50 p-4 rounded-xl mb-4">
-            <p className="text-sm text-purple-900 font-bold">Digite a sua nova senha e clique em salvar.</p>
+          <div className="bg-indigo-50 p-4 rounded-xl mb-4">
+            <p className="text-sm text-indigo-900 font-bold">Digite sua senha atual e a nova senha.</p>
           </div>
           <div>
-            <label className="block text-xs font-bold uppercase text-purple-400 mb-2">Nova Senha</label>
-            <input name="newPassword" type="password" minLength={8} placeholder="••••••••" className="w-full p-3 bg-purple-50/30 border border-purple-100 rounded-xl outline-none focus:ring-2 focus:ring-purple-200 transition-all font-bold" required />
+            <label className="block text-xs font-bold uppercase text-indigo-400 mb-2">Senha Atual</label>
+            <input name="currentPassword" type="password" placeholder="Senha atual" className="w-full p-3 bg-indigo-50/30 border border-indigo-100 rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 transition-all font-bold" required />
+          </div>
+          <div>
+            <label className="block text-xs font-bold uppercase text-indigo-400 mb-2">Nova Senha</label>
+            <input name="newPassword" type="password" minLength={8} placeholder="••••••••" className="w-full p-3 bg-indigo-50/30 border border-indigo-100 rounded-xl outline-none focus:ring-2 focus:ring-indigo-200 transition-all font-bold" required />
           </div>
           <div className="flex gap-4 justify-end pt-4">
-            <button type="button" onClick={() => setShowResetModal(false)} className="px-6 py-3 font-bold text-purple-400 hover:text-purple-600 transition-colors">Cancelar</button>
-            <button type="submit" className="bg-[#8126cf] text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-purple-200 hover:bg-[#6b1ead] transition-all">Salvar Nova Senha</button>
+            <button type="button" onClick={() => setShowResetModal(false)} className="px-6 py-3 font-bold text-indigo-400 hover:text-indigo-600 transition-colors">Cancelar</button>
+            <button type="submit" className="bg-[#4f46e5] text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-indigo-200 hover:bg-[#4338ca] transition-all">Salvar Nova Senha</button>
           </div>
         </form>
       </Modal>
